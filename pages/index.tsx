@@ -37,8 +37,9 @@ const Home: NextPage = () => {
           Introducing a{" "}
           <Text
             span
+            color="primary"
             css={{
-              textGradient: "to right, #FF512F 0%, #DD2476  51%, #FF512F  100%",
+              textGradient: "to bottom, #FF512F 0%, #DD2476  100%",
             }}
           >
             new way{" "}
@@ -58,7 +59,14 @@ const Home: NextPage = () => {
         >
           Soon in your browsers. Something's cooking under the hood. If you're a
           developer,{" "}
-          <Link href="https://github.com/bartaxyz/lo-fi" target="_blank">
+          <Link
+            href="https://github.com/bartaxyz/lo-fi"
+            target="_blank"
+            color="primary"
+            css={{
+              textGradient: "to bottom, #FF512F 0%, #DD2476  100%",
+            }}
+          >
             stay in touch on Github
           </Link>
           .
