@@ -96,7 +96,7 @@ const Home: NextPage = () => {
           ))}
 
           <Link
-            href="/"
+            href="https://github.com/bartaxyz/lo-fi"
             target="_blank"
             css={{ display: "flex", alignItems: "center" }}
           >
