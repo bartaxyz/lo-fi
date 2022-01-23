@@ -39,7 +39,7 @@ const Home: NextPage = () => {
             span
             color="primary"
             css={{
-              textGradient: "to bottom, #FF512F 0%, #DD2476  100%",
+              textGradient: "to bottom, #DD2476 0%, #FF512F  100%",
             }}
           >
             new way{" "}
@@ -64,7 +64,7 @@ const Home: NextPage = () => {
             target="_blank"
             color="primary"
             css={{
-              textGradient: "to bottom, #FF512F 0%, #DD2476  100%",
+              textGradient: "to bottom, #DD2476 0%, #FF512F  100%",
             }}
           >
             stay in touch on Github
