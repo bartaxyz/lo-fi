@@ -13,7 +13,9 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
-        <Head>{CssBaseline.flush()}</Head>
+        <Head title="lo-fi.cz | Introducing a new way to listen &amp; chill with your lo-fi music.">
+          {CssBaseline.flush()}
+        </Head>
         <body>
           <Main />
           <NextScript />
