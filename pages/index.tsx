@@ -62,7 +62,6 @@ const Home: NextPage = () => {
           <Link
             href="https://github.com/bartaxyz/lo-fi"
             target="_blank"
-            color="primary"
             css={{
               textGradient: "to bottom, #DD2476 0%, #FF512F  100%",
             }}
