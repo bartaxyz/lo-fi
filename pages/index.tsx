@@ -8,7 +8,10 @@ import {
   Card,
   Avatar,
   globalCss,
+  styled,
 } from "@nextui-org/react";
+import { Canvas } from "@react-three/fiber";
+import { WireframeDistortedBallScene } from "../scenes/WireframeDistortedBallScene/WireframeDistortedBallScene";
 
 const globalStyles = globalCss({
   html: {
@@ -25,12 +28,26 @@ const Home: NextPage = () => {
   return (
     <React.Fragment>
       <Container css={{ maxWidth: 880 }}>
-        <Spacer y={8} />
+        <Spacer y={4} />
+
+        <CanvasContainer>
+          <Canvas>
+            <WireframeDistortedBallScene />
+          </Canvas>
+        </CanvasContainer>
+
+        <Spacer y={2} />
         <Text
           h1
-          size={60}
           css={{
             textAlign: "center",
+            fontSize: 40,
+            "@xs": {
+              fontSize: 48,
+            },
+            "@sm": {
+              fontSize: 60,
+            },
           }}
           weight="bold"
         >
@@ -161,5 +178,12 @@ const Home: NextPage = () => {
     </React.Fragment>
   );
 };
+
+const CanvasContainer = styled("div", {
+  width: 160,
+  height: 160,
+  margin: "auto",
+  position: "relative",
+});
 
 export default Home;
