@@ -25,7 +25,6 @@ export const IcosahedronWireframe: React.FC<MeshProps> = (props) => {
           distort={0.6}
           speed={1}
           wireframe={true}
-          thickness={2}
         />
       </mesh>
     </React.Fragment>
