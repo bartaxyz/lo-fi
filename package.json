@@ -30,10 +30,17 @@
   "homepage": "https://github.com/bartaxyz/lo-fi#readme",
   "dependencies": {
     "@nextui-org/react": "^1.0.2-beta.1",
+    "@react-three/drei": "^8.6.3",
+    "@react-three/fiber": "^7.0.25",
+    "@types/three": "^0.136.1",
+    "leva": "^0.9.18",
     "next": "12.0.8",
     "prettier": "^2.5.1",
+    "raw-loader": "^4.0.2",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-spring": "^9.4.2",
+    "three": "^0.136.0"
   },
   "devDependencies": {
     "@types/node": "17.0.10",
