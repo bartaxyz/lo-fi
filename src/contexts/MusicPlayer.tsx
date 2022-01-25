@@ -1,22 +1,95 @@
-import React, { createContext, useContext } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import ReactAudioPlayer from "react-audio-player";
+import { Song } from "../../music/data";
 
-/* export const MusicPlayerContext = createContext<MusicPlayerContextProps>({
-  player: "",
+export interface MusicPlayerContext {
+  currentSong?: Song;
+  setCurrentSong: (song: Song) => void;
+  audioContext?: HTMLAudioElement;
+  setAudioContext: (audioContext: HTMLAudioElement) => void;
+  isPlaying?: boolean;
+  setIsPlaying: (isPlaying: boolean) => void;
+}
+
+export const MusicPlayerContext = createContext<MusicPlayerContext>({
+  setCurrentSong: () => {},
+  setAudioContext: () => {},
+  setIsPlaying: () => {},
 });
 
-export const useMusicPlayer = useContext(MusicPlayerContext);
+export const useMusicPlayer = () => {
+  return useContext(MusicPlayerContext);
+};
+
+export interface MusicPlayerProviderProps extends Partial<MusicPlayerContext> {}
+
+export const MusicPlayer: React.FC = () => {
+  const { currentSong, audioContext, setAudioContext, setIsPlaying } =
+    useMusicPlayer();
+  const [audioElement, setAudioElement] = useState<HTMLAudioElement>();
+
+  useEffect(() => {
+    if (!audioElement) return;
+
+    setAudioContext(audioElement);
+
+    const start = () => setIsPlaying(true);
+    const stop = () => setIsPlaying(false);
+
+    audioElement.addEventListener("play", start);
+    audioElement.addEventListener("ended", stop);
+    audioElement.addEventListener("pause", stop);
+
+    return () => {
+      audioElement.removeEventListener("play", start);
+      audioElement.removeEventListener("ended", stop);
+      audioElement.removeEventListener("pause", stop);
+    };
+  }, [audioElement]);
+
+  if (!currentSong) return null;
+
+  return (
+    <ReactAudioPlayer
+      ref={(el) => {
+        if (!el || !el.audioEl || !el.audioEl.current) return;
+        setAudioElement(el.audioEl.current);
+      }}
+      src={currentSong.file}
+      autoPlay={true}
+      controls={true}
+    />
+  );
+};
 
 export const MusicPlayerProvider: React.FC<MusicPlayerProviderProps> = ({
   children,
-  player,
 }) => {
-
-  
-
+  const [currentSong, setCurrentSong] = useState<Song>();
+  const [audioContext, setAudioContext] = useState<HTMLAudioElement>();
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
   return (
-    <MusicPlayerContext.Provider value={player}>
-      {children}
+    <MusicPlayerContext.Provider
+      value={{
+        currentSong,
+        setCurrentSong,
+        audioContext,
+        setAudioContext,
+        isPlaying,
+        setIsPlaying,
+      }}
+    >
+      <React.Fragment>
+        <MusicPlayer />
+        {children}
+      </React.Fragment>
     </MusicPlayerContext.Provider>
   );
-}; */
+};

@@ -3,6 +3,7 @@ import { NextUIProvider } from "@nextui-org/react";
 import Head from "next/head";
 
 import { theme } from "../theme";
+import { MusicPlayerProvider } from "../src/contexts/MusicPlayer";
 
 function MyApp({ Component, pageProps }: any) {
   return (
@@ -14,7 +15,9 @@ function MyApp({ Component, pageProps }: any) {
         </title>
       </Head>
       <NextUIProvider theme={theme}>
-        <Component {...pageProps} />
+        <MusicPlayerProvider>
+          <Component {...pageProps} />
+        </MusicPlayerProvider>
       </NextUIProvider>
     </>
   );

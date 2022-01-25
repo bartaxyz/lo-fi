@@ -1,14 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { Button, Loading, Progress, styled } from "@nextui-org/react";
-import { Canvas, ReactThreeFiber } from "@react-three/fiber";
+import {
+  Button,
+  Card,
+  Image,
+  Loading,
+  Progress,
+  styled,
+  Text,
+} from "@nextui-org/react";
+import { Canvas } from "@react-three/fiber";
 import { PlayerScene } from "../../scenes/PlayerScene/PlayerScene";
 import { MeshGradientScene } from "../../scenes/MeshGradientScene/MeshGradientScene";
+import { useMusicPlayer } from "../../src/contexts/MusicPlayer";
+import { songs } from "../../music/data";
+import { useGLTF, useTexture } from "@react-three/drei";
 
 export default () => {
   const [loading, setLoading] = useState(false);
   const [enabled, setEnabled] = useState(false);
 
   const [loaded, setLoaded] = useState(0);
+
+  useGLTF.preload("/models/vinyl.gltf");
+  useGLTF.preload("/models/record-player.gltf");
+  const textures = useTexture.preload(songs[0].cover);
+
+  const musicPlayer = useMusicPlayer();
+
+  useEffect(() => {
+    musicPlayer.setCurrentSong(songs[0]);
+  }, []);
 
   const enable = () => {
     setLoading(true);
@@ -25,13 +46,25 @@ export default () => {
         setLoading(false);
         setEnabled(true);
       }
-    }, 100);
+    }, 25);
 
     return () => clearTimeout(loadingTimeout);
   }, [loading, loaded]);
 
   return (
     <React.Fragment>
+      {/* <div>
+        {songs.map((song) => (
+          <Card key={song.name}>
+            <img
+              style={{ width: 200, height: 200, borderRadius: 16 }}
+              src={song.cover}
+            />
+            <Text>{song.name}</Text>
+          </Card>
+        ))}
+      </div> */}
+
       <CanvasContainer>
         {!enabled && (
           <CenteredControls>
@@ -53,7 +86,7 @@ export default () => {
               {loading ? (
                 <React.Fragment>
                   {Math.floor(loaded)}% Loaded
-                  <Progress color="primary"/>
+                  <Progress color="primary" />
                 </React.Fragment>
               ) : (
                 "Play"
@@ -62,7 +95,7 @@ export default () => {
           </CenteredControls>
         )}
 
-        <StyledCanvas>
+        <StyledCanvas shadows={true}>
           {enabled ? <PlayerScene /> : <MeshGradientScene />}
         </StyledCanvas>
       </CanvasContainer>
