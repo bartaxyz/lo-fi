@@ -7,23 +7,23 @@ import { useMusicPlayer } from "../../../src/contexts/MusicPlayer";
 export const Vinyl = () => {
   const gltf = useGLTF("/models/vinyl.gltf");
   const [texture1] = useTexture([songs[0].cover]);
+  const vinylTexture = useTexture("/models/vinyl-texture.png");
   const musicPlayer = useMusicPlayer();
 
-  console.log({musicPlayer});
+  console.log({ musicPlayer });
 
   useFrame((state, delta) => {
-    if (!gltf || !musicPlayer.isPlaying) return;
+    // if (!gltf || !musicPlayer.isPlaying) return;
     const speed = Math.PI / 2;
     gltf.scene.rotation.y += speed * delta;
   });
 
   useEffect(() => {
     if (gltf && texture1) {
-      gltf.scene.children[0].castShadow = true;
-      gltf.scene.children[1].castShadow = true;
-      console.log(gltf.scene.children[1]);
-      (gltf.scene.children[1] as any).material.map = texture1;
-      console.log((gltf.scene.children[1] as any).material);
+      vinylTexture.anisotropy = 1;
+      console.log(gltf.scene.children);
+      (gltf.scene.children[1] as any).material.map = vinylTexture;
+      (gltf.scene.children[0] as any).material.map = texture1;
     }
   }, [gltf, texture1]);
 

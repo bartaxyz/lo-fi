@@ -24,6 +24,7 @@ export default () => {
   useGLTF.preload("/models/vinyl.gltf");
   useGLTF.preload("/models/record-player.gltf");
   const textures = useTexture.preload(songs[0].cover);
+  const vinylTexture = useTexture.preload("/models/vinyl-texture.png");
 
   const musicPlayer = useMusicPlayer();
 
