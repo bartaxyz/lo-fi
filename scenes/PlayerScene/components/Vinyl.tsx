@@ -15,9 +15,9 @@ export const Vinyl = () => {
   const state = useThree();
 
   const controls = useControls({
-    reflectivity: 0.1,
+    reflectivity: 100,
     flatShading: true,
-    metalness: 0.1
+    metalness: 0.75
   })
 
   console.log({ musicPlayer });
