@@ -90,8 +90,16 @@ export default () => {
           </CenteredControls>
         )}
 
-        <StyledCanvas shadows={true}>
-          <Suspense fallback={null}>
+        <StyledCanvas
+          shadows={true}
+          gl={{ antialias: false }}
+          dpr={
+            typeof window === "undefined"
+              ? 1
+              : Math.max(window.devicePixelRatio ?? 1, 2)
+          }
+        >
+          <Suspense fallback={<MeshGradientScene />}>
             {enabled ? <PlayerScene /> : <MeshGradientScene />}
           </Suspense>
         </StyledCanvas>
