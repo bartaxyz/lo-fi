@@ -24,7 +24,11 @@ export const MusicPlayerContext = createContext<MusicPlayerContext>({
 });
 
 export const useMusicPlayer = () => {
-  return useContext(MusicPlayerContext);
+  const context = useContext(MusicPlayerContext);
+  if (context === undefined) {
+    throw new Error("useMusicPlayer must be used within a MusicPlayerProvider");
+  }
+  return context;
 };
 
 export interface MusicPlayerProviderProps extends Partial<MusicPlayerContext> {}
@@ -74,6 +78,8 @@ export const MusicPlayerProvider: React.FC<MusicPlayerProviderProps> = ({
   const [currentSong, setCurrentSong] = useState<Song>();
   const [audioContext, setAudioContext] = useState<HTMLAudioElement>();
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+
+  console.log("MusicPlayerProvider");
 
   return (
     <MusicPlayerContext.Provider

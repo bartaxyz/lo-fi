@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -20,12 +20,6 @@ export default () => {
   const [enabled, setEnabled] = useState(false);
 
   const [loaded, setLoaded] = useState(0);
-
-  useGLTF.preload("/models/vinyl.gltf");
-  useGLTF.preload("/models/record-player.gltf");
-  const textures = useTexture.preload(songs[0].cover);
-  const vinylTexture = useTexture.preload("/models/vinyl-texture.png");
-
   const musicPlayer = useMusicPlayer();
 
   useEffect(() => {
@@ -97,7 +91,9 @@ export default () => {
         )}
 
         <StyledCanvas shadows={true}>
-          {enabled ? <PlayerScene /> : <MeshGradientScene />}
+          <Suspense fallback={null}>
+            {enabled ? <PlayerScene /> : <MeshGradientScene />}
+          </Suspense>
         </StyledCanvas>
       </CanvasContainer>
     </React.Fragment>
