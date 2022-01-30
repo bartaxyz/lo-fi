@@ -2,9 +2,18 @@ import React, { Suspense, useEffect } from "react";
 import { useGLTF, useTexture } from "@react-three/drei";
 import { songs } from "../../../music/data";
 import { useFrame } from "@react-three/fiber";
+import {
+  Material,
+  MeshPhongMaterial,
+  MeshPhysicalMaterial,
+  Vector2,
+} from "three";
 
 export const RecordPlayer = () => {
   const gltf = useGLTF("/models/record-player.gltf");
+  const recordPlayerWoodenDeskTexture = useTexture(
+    "/models/record-player-wooden-desk-texture.png"
+  );
 
   useFrame((state, delta) => {
     if (!gltf) return;
@@ -14,8 +23,9 @@ export const RecordPlayer = () => {
 
   useEffect(() => {
     if (gltf) {
-      gltf.scene.position.set(0, 0, 0);
-      gltf.scene.scale.set(0.14, 0.14, 0.14);
+      (
+        (gltf.scene.children[0] as THREE.Mesh).material as MeshPhysicalMaterial
+      ).map = recordPlayerWoodenDeskTexture;
       /* gltf.scene.children[0].castShadow = true;
       gltf.scene.children[1].castShadow = true; */
     }

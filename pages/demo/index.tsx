@@ -13,7 +13,12 @@ import { PlayerScene } from "../../scenes/PlayerScene/PlayerScene";
 import { MeshGradientScene } from "../../scenes/MeshGradientScene/MeshGradientScene";
 import { useMusicPlayer } from "../../src/contexts/MusicPlayer";
 import { songs } from "../../music/data";
-import { useGLTF, useTexture } from "@react-three/drei";
+import { Html, useGLTF, useProgress, useTexture } from "@react-three/drei";
+
+const Loader = () => {
+  const { active, progress, errors, item, loaded, total } = useProgress();
+  return <Html center>{progress.toFixed(0)} % loaded</Html>;
+};
 
 export default () => {
   const [loading, setLoading] = useState(false);
@@ -99,7 +104,7 @@ export default () => {
               : Math.max(window.devicePixelRatio ?? 1, 2)
           }
         >
-          <Suspense fallback={<MeshGradientScene />}>
+          <Suspense fallback={null}>
             {enabled ? <PlayerScene /> : <MeshGradientScene />}
           </Suspense>
         </StyledCanvas>
