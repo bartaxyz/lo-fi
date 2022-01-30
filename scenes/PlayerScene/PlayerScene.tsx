@@ -15,7 +15,7 @@ export const PlayerScene = () => {
 
   const light2Controls = useControls("Light #2 Controls", {
     color: '#ffffff',
-    position: [10, 10, 5],
+    position: [-5, 8, 6],
     intensity: 1,
   });
 
