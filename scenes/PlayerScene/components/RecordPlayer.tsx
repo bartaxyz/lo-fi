@@ -11,9 +11,9 @@ import {
 
 export const RecordPlayer = () => {
   const gltf = useGLTF("/models/record-player.gltf");
-  const recordPlayerWoodenDeskTexture = useTexture(
+  /* const recordPlayerWoodenDeskTexture = useTexture(
     "/models/record-player-wooden-desk-texture.png"
-  );
+  ); */
 
   useFrame((state, delta) => {
     if (!gltf) return;
@@ -23,9 +23,9 @@ export const RecordPlayer = () => {
 
   useEffect(() => {
     if (gltf) {
-      (
+      /* (
         (gltf.scene.children[0] as THREE.Mesh).material as MeshPhysicalMaterial
-      ).map = recordPlayerWoodenDeskTexture;
+      ).map = recordPlayerWoodenDeskTexture; */
       /* gltf.scene.children[0].castShadow = true;
       gltf.scene.children[1].castShadow = true; */
     }

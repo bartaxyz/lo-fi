@@ -14,7 +14,7 @@ import { useControls } from "leva";
 export const Vinyl = () => {
   const gltf = useGLTF("/models/vinyl.gltf");
   const [texture1] = useTexture([songs[0].cover]);
-  const vinylTexture = useTexture("/models/vinyl-texture.png");
+  /* const vinylTexture = useTexture("/models/vinyl-texture.png"); */
   const vinylNormal = useTexture("/models/vinyl-normal.png");
   const vinylInvertedNormal = useTexture("/models/vinyl-inverted-normal.png");
   const musicPlayer = useMusicPlayer();
@@ -40,7 +40,6 @@ export const Vinyl = () => {
 
   useEffect(() => {
     if (gltf && texture1 && cover && vinyl) {
-      vinylTexture.anisotropy = state.gl.capabilities.getMaxAnisotropy();
       console.log(gltf.scene.children);
       (
         (gltf.scene.children[1] as THREE.Mesh).material as MeshPhysicalMaterial
