@@ -1,28 +1,42 @@
 import React, { useEffect, useRef } from "react";
-import { OrbitControls, OrthographicCamera } from "@react-three/drei";
+import {
+  Environment,
+  OrbitControls,
+  OrthographicCamera,
+} from "@react-three/drei";
 import { useControls } from "leva";
 import { Vinyl } from "./components/Vinyl";
 import { RecordPlayer } from "./components/RecordPlayer";
-import { Environment } from "./components/Environment";
-import { useThree } from "@react-three/fiber";
+import { Environment as EnvironmentModels } from "./components/Environment";
+import { useFrame, useThree } from "@react-three/fiber";
+import { PerspectiveCamera } from "three";
+
+function Rig() {
+  const controls = useThree((state) => state.controls as any);
+  const { azimuth, polar, fov } = useControls("Camera", {
+    azimuth: { value: Math.PI / 2, min: 0, max: Math.PI },
+    polar: { value: 0.8, min: 0, max: Math.PI / 2 },
+    fov: { value: 50, min: 0, max: 100 },
+  });
+  useFrame(() => {
+    controls?.setAzimuthalAngle(azimuth);
+    controls?.setPolarAngle(polar);
+    (controls.object as PerspectiveCamera).fov = fov;
+  });
+  return null;
+}
 
 export const PlayerScene = () => {
   const light1Controls = useControls("Light #1 Controls", {
-    color: '#ffffff',
+    color: "#ffffff",
     position: [10, 10, 10],
     intensity: 1,
   });
 
   const light2Controls = useControls("Light #2 Controls", {
-    color: '#ffffff',
+    color: "#ffffff",
     position: [-5, 8, 6],
     intensity: 1,
-  });
-
-  const cam = useControls("Camera", {
-    position: [7, 9, -6],
-    rotation: [-2, 0, 2],
-    zoom: 2000,
   });
 
   const orbitCam = useRef<any>();
@@ -34,25 +48,11 @@ export const PlayerScene = () => {
     <React.Fragment>
       {/* <Environment
         background={true}
-        path="/environments/"
-        files="studio_small_09_1k.exr"
+        files="/environments/studio_small_09_1k.exr"
       /> */}
 
-      <OrbitControls
-        ref={orbitCam}
-        enableDamping={false}
-        enablePan={false}
-        enableRotate={false}
-        enableZoom={false}
-        enabled={false}
-      />
-
-      <OrthographicCamera
-        makeDefault
-        position={cam.position}
-        rotation={cam.rotation}
-        zoom={cam.zoom}
-      />
+      <OrbitControls makeDefault ref={orbitCam} enabled={true} zoom0={1000} />
+      <Rig />
 
       <ambientLight />
       <pointLight
@@ -66,7 +66,7 @@ export const PlayerScene = () => {
         intensity={light2Controls.intensity}
       />
 
-      <Environment />
+      <EnvironmentModels />
 
       <Vinyl />
       <RecordPlayer />
