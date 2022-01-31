@@ -68,6 +68,7 @@ export const MusicPlayer: React.FC = () => {
       src={currentSong.file}
       autoPlay={true}
       controls={true}
+      style={{ display: 'none' }}
     />
   );
 };
