@@ -17,14 +17,21 @@ import { Html, useGLTF, useProgress, useTexture } from "@react-three/drei";
 
 const Loader = () => {
   const { active, progress, errors, item, loaded, total } = useProgress();
-  return <Html center>{progress.toFixed(0)} % loaded</Html>;
+  return (
+    <Html center>
+      <Button
+        rounded={true}
+        disabled={true}
+        icon={<Loading color="white" size="sm" type="spinner" />}
+      >
+        {progress.toFixed(0)} % loaded
+      </Button>
+    </Html>
+  );
 };
 
 export default () => {
-  const [loading, setLoading] = useState(false);
   const [enabled, setEnabled] = useState(false);
-
-  const [loaded, setLoaded] = useState(0);
   const musicPlayer = useMusicPlayer();
 
   useEffect(() => {
@@ -32,24 +39,8 @@ export default () => {
   }, []);
 
   const enable = () => {
-    setLoading(true);
+    setEnabled(true);
   };
-
-  useEffect(() => {
-    if (!loading) return;
-
-    const loadingTimeout = setTimeout(() => {
-      setLoaded(Math.min(100, loaded + Math.random() * 10));
-
-      if (loaded >= 100) {
-        clearInterval(loadingTimeout);
-        setLoading(false);
-        setEnabled(true);
-      }
-    }, 25);
-
-    return () => clearTimeout(loadingTimeout);
-  }, [loading, loaded]);
 
   return (
     <React.Fragment>
@@ -76,35 +67,22 @@ export default () => {
               color="primary"
               rounded={true}
               onClick={enable}
-              disabled={loading}
-              icon={
-                loading ? (
-                  <Loading color="white" size="sm" type="spinner" />
-                ) : null
-              }
             >
-              {loading ? (
-                <React.Fragment>
-                  {Math.floor(loaded)}% Loaded
-                  <Progress color="primary" />
-                </React.Fragment>
-              ) : (
-                "Play"
-              )}
+              Play
             </Button>
           </CenteredControls>
         )}
 
         <StyledCanvas
           shadows={true}
-          gl={{ antialias: false }}
+          gl={{ antialias: true }}
           dpr={
             typeof window === "undefined"
               ? 1
               : Math.max(window.devicePixelRatio ?? 1, 2)
           }
         >
-          <Suspense fallback={null}>
+          <Suspense fallback={<Loader />}>
             {enabled ? <PlayerScene /> : <MeshGradientScene />}
           </Suspense>
         </StyledCanvas>
