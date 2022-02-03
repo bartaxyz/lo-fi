@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useContext, useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -11,7 +11,11 @@ import {
 import { Canvas } from "@react-three/fiber";
 import { PlayerScene } from "../../scenes/PlayerScene/PlayerScene";
 import { MeshGradientScene } from "../../scenes/MeshGradientScene/MeshGradientScene";
-import { useMusicPlayer } from "../../src/contexts/MusicPlayer";
+import {
+  MusicPlayerContext,
+  MusicPlayerProvider,
+  useMusicPlayer,
+} from "../../src/contexts/MusicPlayer";
 import { songs } from "../../music/data";
 import { Html, useGLTF, useProgress, useTexture } from "@react-three/drei";
 
@@ -30,7 +34,7 @@ const Loader = () => {
   );
 };
 
-export default () => {
+const DemoPage = () => {
   const [enabled, setEnabled] = useState(false);
   const musicPlayer = useMusicPlayer();
 
@@ -57,7 +61,22 @@ export default () => {
       </div> */}
 
       <CanvasContainer>
-        {!enabled && (
+        {enabled ? (
+          <BottomControls>
+            <Button
+              rounded={true}
+              onClick={() => {
+                if (musicPlayer.isPlaying) {
+                  musicPlayer.pause();
+                } else {
+                  musicPlayer.play();
+                }
+              }}
+            >
+              {musicPlayer.isPlaying ? "Stop" : "Play"}
+            </Button>
+          </BottomControls>
+        ) : (
           <CenteredControls>
             <Button
               css={{
@@ -83,13 +102,23 @@ export default () => {
           }
         >
           <Suspense fallback={<Loader />}>
-            {enabled ? <PlayerScene /> : <MeshGradientScene />}
+            {enabled ? (
+              <PlayerScene musicPlayer={musicPlayer} />
+            ) : (
+              <MeshGradientScene />
+            )}
           </Suspense>
         </StyledCanvas>
       </CanvasContainer>
     </React.Fragment>
   );
 };
+
+export default () => (
+  <MusicPlayerProvider>
+    <DemoPage />
+  </MusicPlayerProvider>
+);
 
 const CanvasContainer = styled("div", {
   padding: "$8",
@@ -101,6 +130,15 @@ const CenteredControls = styled("div", {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
+  zIndex: 1,
+  pointerEvents: "none",
+});
+
+const BottomControls = styled("div", {
+  position: "absolute",
+  bottom: "0",
+  left: "0",
+  right: "0",
   zIndex: 1,
   pointerEvents: "none",
 });

@@ -15,12 +15,16 @@ export interface MusicPlayerContext {
   setAudioContext: (audioContext: HTMLAudioElement) => void;
   isPlaying?: boolean;
   setIsPlaying: (isPlaying: boolean) => void;
+  play: () => void;
+  pause: () => void;
 }
 
 export const MusicPlayerContext = createContext<MusicPlayerContext>({
   setCurrentSong: () => {},
   setAudioContext: () => {},
   setIsPlaying: () => {},
+  play: () => {},
+  pause: () => {},
 });
 
 export const useMusicPlayer = () => {
@@ -68,7 +72,7 @@ export const MusicPlayer: React.FC = () => {
       src={currentSong.file}
       autoPlay={true}
       controls={true}
-      style={{ display: 'none' }}
+      style={{ display: "none" }}
     />
   );
 };
@@ -80,7 +84,15 @@ export const MusicPlayerProvider: React.FC<MusicPlayerProviderProps> = ({
   const [audioContext, setAudioContext] = useState<HTMLAudioElement>();
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
-  console.log("MusicPlayerProvider");
+  const play = () => {
+    if (audioContext) audioContext.play();
+    setIsPlaying(true);
+  };
+
+  const pause = () => {
+    if (audioContext) audioContext.pause();
+    setIsPlaying(false);
+  }
 
   return (
     <MusicPlayerContext.Provider
@@ -91,6 +103,8 @@ export const MusicPlayerProvider: React.FC<MusicPlayerProviderProps> = ({
         setAudioContext,
         isPlaying,
         setIsPlaying,
+        play,
+        pause,
       }}
     >
       <React.Fragment>

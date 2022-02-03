@@ -2,22 +2,21 @@ import React, { Suspense, useEffect } from "react";
 import { useGLTF, useTexture } from "@react-three/drei";
 import { songs } from "../../../music/data";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useMusicPlayer } from "../../../src/contexts/MusicPlayer";
 import {
-  Material,
-  MeshPhongMaterial,
-  MeshPhysicalMaterial,
-  Vector2,
-} from "three";
+  MusicPlayerContext,
+  useMusicPlayer,
+} from "../../../src/contexts/MusicPlayer";
+import { MeshPhysicalMaterial } from "three";
 import { useControls } from "leva";
 
-export const Vinyl = () => {
+export const Vinyl: React.FC<{
+  musicPlayer: MusicPlayerContext;
+}> = ({ musicPlayer }) => {
   const gltf = useGLTF("/models/vinyl.gltf");
   const [texture1] = useTexture([songs[0].cover]);
   /* const vinylTexture = useTexture("/models/vinyl-texture.png"); */
   const vinylNormal = useTexture("/models/vinyl-normal.png");
   const vinylInvertedNormal = useTexture("/models/vinyl-inverted-normal.png");
-  const musicPlayer = useMusicPlayer();
   const state = useThree();
 
   const vinyl = useControls("Vinyl", {
@@ -30,10 +29,10 @@ export const Vinyl = () => {
     metalness: 1,
   });
 
-  console.log({ musicPlayer });
+  console.log("BOOOBOOOBOOO", { musicPlayer });
 
   useFrame((state, delta) => {
-    // if (!gltf || !musicPlayer.isPlaying) return;
+    if (!gltf || !musicPlayer.isPlaying) return;
     const speed = Math.PI / 2;
     gltf.scene.rotation.y += speed * delta;
   });

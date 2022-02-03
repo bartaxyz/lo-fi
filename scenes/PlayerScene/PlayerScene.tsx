@@ -10,6 +10,10 @@ import { RecordPlayer } from "./components/RecordPlayer";
 import { Environment as EnvironmentModels } from "./components/Environment";
 import { useFrame, useThree } from "@react-three/fiber";
 import { PerspectiveCamera } from "three";
+import {
+  MusicPlayer,
+  MusicPlayerContext,
+} from "../../src/contexts/MusicPlayer";
 
 function Rig() {
   const controls = useThree((state) => state.controls as any);
@@ -26,7 +30,9 @@ function Rig() {
   return null;
 }
 
-export const PlayerScene = () => {
+export const PlayerScene: React.FC<{
+  musicPlayer: MusicPlayerContext;
+}> = ({ musicPlayer }) => {
   const light1Controls = useControls("Light #1 Controls", {
     color: "#ffffff",
     position: [10, 10, 10],
@@ -68,7 +74,7 @@ export const PlayerScene = () => {
 
       <EnvironmentModels />
 
-      <Vinyl />
+      <Vinyl musicPlayer={musicPlayer} />
       <RecordPlayer />
     </React.Fragment>
   );
