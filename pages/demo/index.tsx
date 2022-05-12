@@ -1,23 +1,20 @@
-import React, { Suspense, useContext, useEffect, useState } from "react";
-import {
-  Button,
-  Card,
-  Image,
-  Loading,
-  Progress,
-  styled,
-  Text,
-} from "@nextui-org/react";
+import React, { Suspense, useEffect, useState } from "react";
+import { Button, Loading, styled } from "@nextui-org/react";
 import { Canvas } from "@react-three/fiber";
 import { PlayerScene } from "../../scenes/PlayerScene/PlayerScene";
 import { MeshGradientScene } from "../../scenes/MeshGradientScene/MeshGradientScene";
 import {
-  MusicPlayerContext,
   MusicPlayerProvider,
   useMusicPlayer,
 } from "../../src/contexts/MusicPlayer";
 import { songs } from "../../music/data";
-import { Html, useGLTF, useProgress, useTexture } from "@react-three/drei";
+import { Html, useProgress } from "@react-three/drei";
+import {
+  DepthOfField,
+  EffectComposer,
+  Noise,
+} from "@react-three/postprocessing";
+import { BlendFunction } from "postprocessing";
 
 const Loader = () => {
   const { active, progress, errors, item, loaded, total } = useProgress();
@@ -101,6 +98,16 @@ const DemoPage = () => {
               : Math.max(window.devicePixelRatio ?? 1, 2)
           }
         >
+          <EffectComposer>
+            <Noise opacity={1} premultiply blendFunction={BlendFunction.ADD} />
+
+            <DepthOfField
+              focusDistance={0}
+              focalLength={0.02}
+              bokehScale={2}
+            />
+          </EffectComposer>
+
           <Suspense fallback={<Loader />}>
             {enabled ? (
               <PlayerScene musicPlayer={musicPlayer} />
